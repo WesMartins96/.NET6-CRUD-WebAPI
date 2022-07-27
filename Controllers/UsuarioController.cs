@@ -29,6 +29,14 @@ namespace Crud_.NET6_WebApi.Controllers
                 ? Ok(usuarios) : NoContent();
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> PegarPeloId(int id)
+        {
+            var usuario = await _usuarioRepository.BuscarUsuarioPeloId(id);
+            return usuario != null 
+                ? Ok(usuario) : NotFound("Usuario não encontrado");
+        }
+
         // Adicionar
         [HttpPost]
         public async Task<IActionResult> Post(Usuario usuario)
@@ -37,5 +45,21 @@ namespace Crud_.NET6_WebApi.Controllers
             return await _usuarioRepository.SaveChangesAsync()
                 ? Ok("Usuario Adicionado com Sucesso!") : BadRequest("Erro ao Salvar o Usuario!");
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Usuario usuario)
+        {
+            var usuarioBanco = await _usuarioRepository.BuscarUsuarios();
+            if (usuarioBanco == null) return NotFound("Usuario não encontrado");
+
+            usuarioBanco.Nome = usuario.Nome ?? usuarioBanco.Nome;
+            usuarioBanco.DataNascimento = usuario.DataNascimento != new DateTime()
+                ? usuario.DataNascimento : usuarioBanco.DataNascimento;
+
+            _usuarioRepository.AtualizarUsuario(usuarioBanco);
+
+             return await _usuarioRepository.SaveChangesAsync()
+                ? Ok("Usuario Atualizado com Sucesso!") : BadRequest("Erro ao Atualizar o Usuario!");
+        }   
     }
 }

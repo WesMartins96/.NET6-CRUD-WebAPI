@@ -25,12 +25,12 @@ namespace Crud_.NET6_WebApi.Repository
 
         public void AtualizarUsuario(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _context.Update(usuario);
         }
 
-        public Task<Usuario> BuscarUsuarioPeloId(int id)
+        public async Task<Usuario> BuscarUsuarioPeloId(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Usuario>> BuscarUsuarios()
