@@ -1,4 +1,5 @@
 using Crud_.NET6_WebApi.Data;
+using Crud_.NET6_WebApi.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<UsuarioContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoBD")));
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 var app = builder.Build();
 
